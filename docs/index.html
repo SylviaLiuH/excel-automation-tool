@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Excel 自动整理器</title>
+  <meta name="description" content="浏览器本地处理 Excel/CSV：合并、去重、缺失值检查和结果导出。" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <span class="badge">Python Portfolio · Live Demo</span>
+        <h1>📊 Excel 自动整理器</h1>
+        <p>上传两份 Excel / CSV 文件，完成清洗、关联、去重、缺失值检查，并导出新的 Excel。</p>
+      </div>
+      <div class="privacy">🔒 文件仅在浏览器本地处理，不会上传到服务器</div>
+    </header>
+
+    <section class="card">
+      <h2>1. 上传文件</h2>
+      <div class="upload-grid">
+        <label class="upload-box">
+          <span class="upload-title">文件 A</span>
+          <input id="fileA" type="file" accept=".xlsx,.xls,.csv" />
+          <span id="fileAName" class="file-name">尚未选择</span>
+        </label>
+        <label class="upload-box">
+          <span class="upload-title">文件 B</span>
+          <input id="fileB" type="file" accept=".xlsx,.xls,.csv" />
+          <span id="fileBName" class="file-name">尚未选择</span>
+        </label>
+      </div>
+
+      <div id="previewWrap" class="preview-grid hidden">
+        <div>
+          <h3>文件 A 预览</h3>
+          <div id="previewA" class="table-wrap"></div>
+        </div>
+        <div>
+          <h3>文件 B 预览</h3>
+          <div id="previewB" class="table-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="configCard" class="card hidden">
+      <h2>2. 选择处理方式</h2>
+      <div class="controls">
+        <label>
+          <span>关联字段</span>
+          <select id="joinKey"></select>
+        </label>
+        <label>
+          <span>合并方式</span>
+          <select id="joinMode">
+            <option value="left">左连接（保留文件 A 全部数据）</option>
+            <option value="inner">内连接（只保留两边都匹配的数据）</option>
+            <option value="outer">外连接（保留两边全部数据）</option>
+          </select>
+        </label>
+      </div>
+      <button id="runBtn" class="primary">🚀 开始处理</button>
+      <p id="errorBox" class="error hidden"></p>
+    </section>
+
+    <section id="resultCard" class="card hidden">
+      <div class="result-head">
+        <div>
+          <h2>3. 处理结果</h2>
+          <p class="muted">处理完成，可以预览并下载交付文件。</p>
+        </div>
+        <button id="downloadBtn" class="download">⬇️ 下载 processed_result.xlsx</button>
+      </div>
+
+      <div class="metrics">
+        <div class="metric"><span>结果行数</span><strong id="mRows">0</strong></div>
+        <div class="metric"><span>结果列数</span><strong id="mCols">0</strong></div>
+        <div class="metric"><span>删除重复行</span><strong id="mDup">0</strong></div>
+        <div class="metric"><span>缺失值总数</span><strong id="mMissing">0</strong></div>
+      </div>
+
+      <h3>合并结果</h3>
+      <div id="resultTable" class="table-wrap large"></div>
+
+      <h3>缺失值报告</h3>
+      <div id="missingTable" class="table-wrap"></div>
+    </section>
+
+    <footer>
+      Built as a lightweight Excel/CSV automation demo · Python/Pandas version available on GitHub
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
